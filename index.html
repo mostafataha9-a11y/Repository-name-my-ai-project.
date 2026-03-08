@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecorGlobal AI | المنصة العالمية الذكية للديكور والعمارة</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="DecorGlobal AI هي منصة عالمية فائقة الأداء للمصممين والمعماريين. تحليل مشاريع مدعوم بالذكاء الاصطناعي، ترجمة فورية، ومجتمع تصميم احترافي متوافق مع معايير الوصول العالمية W3C.">
+    <meta name="keywords" content="تصميم داخلي, عمارة, ذكاء اصطناعي, ديكور, تحليل غرف, W3C, WCAG 2.2, قارئات الشاشة">
+    <link rel="canonical" href="https://decorglobal.ai">
+    
+    <!-- Performance & Edge Delivery Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --surface: #f8fafc;
+            --accent: #10b981;
+        }
+        
+        html.dark {
+            --surface: #020617;
+            background-color: #020617;
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+            background-color: var(--surface);
+            color: #1e293b;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dark body {
+            color: #f1f5f9;
+        }
+
+        /* Focus States for WCAG Compliance */
+        :focus-visible {
+            outline: 4px solid var(--primary);
+            outline-offset: 4px;
+            box-shadow: 0 0 0 8px rgba(79, 70, 229, 0.2);
+            border-radius: 4px;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Skip Navigation Link */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            z-index: 9999;
+            font-weight: 900;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+    </style>
+
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "path": "https://esm.sh/path@^0.12.7"
+  }
+}
+</script>
+<link rel="stylesheet" href="./index.css">
+</head>
+<body class="transition-colors duration-500">
+    <a href="#main-content" class="skip-link">انتقل إلى المحتوى الأساسي</a>
+    <div id="root"></div>
+<script type="module" src="./index.tsx"></script>
+</body>
+</html>

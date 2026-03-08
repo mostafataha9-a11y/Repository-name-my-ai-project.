@@ -1,0 +1,8 @@
+{
+  "name": "DecorGlobal AI - Next-Gen Interior Design Platform",
+  "description": "A high-performance, AI-driven global platform for interior designers, architects, and home decor enthusiasts featuring real-time translation, expert AI assistants, and professional project management.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
