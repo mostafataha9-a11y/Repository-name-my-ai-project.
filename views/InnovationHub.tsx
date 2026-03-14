@@ -1,5 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+
+import { saveProject } from "../services/projectService"
 import { 
   Rocket, Sparkles, Box, Monitor, Image as ImageIcon, Palette, 
   Briefcase, Code, Loader2, ArrowRight, CheckCircle, Globe, Camera, Download, Layout, Share2, Target, Cpu,
@@ -20,6 +22,7 @@ import {
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Language, Region, UserRank, UserPreferences, PlanType, GatewayRole, AuditLog, DrawingVersion, EngineeringProject, ChatRoom, AnalysisEngineMetrics, AccuracyTestResult, BuildingCodeRule, TaskQueueItem, SecurityActivityLog, ProjectEncryptionKey, DataRetentionPolicy, ISOComplianceStatus, ClashDetectionResult, DesignRiskIndicator, SmartVersionDiff, EngineeringErrorDatabaseEntry, UserCorrectionFeedback, SubscriptionPlan, UsageContract, PaymentGatewayStatus, AISummaryReport, SmartNotification, DrawingComment, DecisionLogEntry, MeetingSummary, ExpertRating, PilotOffice, CaseStudy, MarketProofMetrics, ChatArchive, MeetingDocumentation } from '../types';
+import { createClient } from '@supabase/supabase-js';
 import { 
   generateRoomRedesign, 
   generateHighQualityRoomDesign,
@@ -152,7 +155,50 @@ const InnovationHub: React.FC<InnovationHubProps> = ({ lang, initialSubTab = 'ai
   const [usageLogs, setUsageLogs] = useState<UsageLog[]>([]);
   const [learningDashboard, setLearningDashboard] = useState<any>(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
+const runTask = async (taskType: 'analyze' | 'redesign') => {
+    if (!roomImg) return;
+    
+    setIsAnalyzing(true);
+    setIsGenerating(true);
 
+   try {
+      let data;
+
+      // 1. تنفيذ المهمة (تحليل أو تصميم)
+      if (taskType === 'analyze') {
+        data = await analyzeRoomEngineering(roomImg, lang);
+        setAnalysis(data);
+      } else {
+        data = await generateRoomRedesign(roomImg, selectedStyle, 'PRO', lang);
+        if (data) setRedesignedImgs([data]);
+      }
+
+      // 2. استيراد Supabase مرة واحدة فقط وبطريقة ذكية
+      const { supabase: supabaseClient } = (await import('../services/supabaseClient')) as any;
+
+      // 3. الحفظ في قاعدة البيانات إذا وجدنا بيانات
+      if (data) {
+        const { error } = await supabaseClient
+          .from('projects')
+          .insert([
+            {
+              title: taskType === 'analyze' ? 'تحليل معماري' : 'تصميم AI',
+              ai_analysis: typeof data === 'string' ? data : JSON.stringify(data),
+              image_url: roomImg
+            }
+          ]);
+
+        if (!error) console.log("✅ Saved successfully!");
+        else console.error("❌ DB Error:", error);
+      }
+
+    } catch (err) {
+      console.error("System Error:", err);
+    } finally {
+      setIsAnalyzing(false);
+      setIsGenerating(false);
+    }
+  };
   // Color Psychology States
   const [psychologyParams, setPsychologyParams] = useState({
     spaceType: 'Home',
@@ -6368,15 +6414,21 @@ const InnovationHub: React.FC<InnovationHubProps> = ({ lang, initialSubTab = 'ai
                     </div>
                   </div>
                 ) : (
-                  <div className="h-full min-h-[500px] bg-slate-900/20 backdrop-blur-sm rounded-[3.5rem] border-2 border-dashed border-slate-200 dark:border-white/5 flex flex-col items-center justify-center text-center p-12">
-                    <div className="w-24 h-24 bg-white dark:bg-slate-800 rounded-[2.5rem] flex items-center justify-center mb-8 shadow-xl">
-                      <Brain className="w-12 h-12 text-indigo-400 opacity-20" />
-                    </div>
-                    <h4 className="text-2xl font-black text-slate-400 uppercase tracking-tighter mb-4">Awaiting Psychological Input</h4>
-                    <p className="text-xs text-slate-500 font-bold uppercase tracking-widest max-w-xs leading-relaxed">
-                      Configure the space parameters and activate the neural analysis engine.
-                    </p>
-                  </div>
+  <div className="w-[500px] h-[500px] overflow-y-auto bg-slate-900/20 backdrop-blur-sm rounded-[3.5rem] border-2 border-dashed border-slate-200 dark:border-white/5 flex flex-col items-center justify-center text-center p-12 mx-auto">
+
+  <div className="w-24 h-24 bg-white dark:bg-slate-800 rounded-[2.5rem] flex items-center justify-center mb-8 shadow-xl">
+    <Brain className="w-12 h-12 text-indigo-400 opacity-20" />
+  </div>
+
+  <h4 className="text-2xl font-black text-slate-400 uppercase tracking-tighter mb-4">
+    Awaiting Psychological Input
+  </h4>
+
+  <p className="text-xs text-slate-500 font-bold uppercase tracking-widest max-w-xs leading-relaxed">
+    Configure the space parameters and activate the neural analysis engine.
+  </p>
+
+</div>
                 )}
 
                 {/* Color Conflict Warning System UI */}
